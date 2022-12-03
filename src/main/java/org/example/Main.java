@@ -3,6 +3,7 @@ package org.example;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -51,11 +52,17 @@ public class Main {
         Double gordurasSaturadas = Double.valueOf(extractNumberPart(data[5]));
         Integer colesterol = Integer.valueOf(extractNumberPart(data[6]));
         Double proteina = Double.valueOf(extractNumberPart(data[38]));
+        boolean hasGluten = hasGluten(data[1]);
         Double sodio = Double.valueOf(extractNumberPart(data[7]));
         Double acucar = Double.valueOf(extractNumberPart(data[60]));
         Double lactose = Double.valueOf(extractNumberPart(data[64]));
         return new Alimento(id,nome,porcao,calorias, colesterol,
-                proteina, false, gordurasSaturadas, sodio, acucar, lactose);
+                proteina, hasGluten, gordurasSaturadas, sodio, acucar, lactose);
+    }
+
+    private static boolean hasGluten(String food) {
+        final List<String> foodsWithGluten = List.of("bread", "pasta", "pie", "cookie");
+        return foodsWithGluten.stream().anyMatch(food::contains);
     }
 
     private static String extractNumberPart(String text){
